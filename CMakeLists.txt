@@ -19,7 +19,8 @@ find_package(Qt5 ${QT_MIN_VERSION} REQUIRED COMPONENTS
     Gui
     Qml
     Quick
-    DBus)
+    DBus
+    LinguistTools )
 
 find_package(Glacier COMPONENTS App REQUIRED)
 find_package(PkgConfig REQUIRED)
@@ -53,3 +54,11 @@ install(FILES qml/glacier-polkit-agent.qml
 
 install(FILES glacier-polkit-agent.service
     DESTINATION /usr/lib/systemd/user/)
+
+# Translations
+file(GLOB TS_FILES translations/*.ts)
+qt5_add_translation(QM_FILES ${TS_FILES})
+add_custom_target(translations DEPENDS ${QM_FILES})
+add_dependencies(glacier-polkit-agent translations)
+install(FILES ${QM_FILES}
+        DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/glacier-polkit-agent/translations)
