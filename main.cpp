@@ -45,6 +45,7 @@
 int main(int argc, char *argv[])
 {
     QGuiApplication *app = GlacierApp::app(argc, argv);
+    app->setOrganizationName("NemoMobile");
     app->setQuitOnLastWindowClosed(false);
 
     PolkitQt1::UnixSessionSubject subject(QGuiApplication::applicationPid());
