@@ -32,18 +32,17 @@
 #ifndef POLKITINTERFACE_H
 #define POLKITINTERFACE_H
 
+#include <QDBusConnection>
+#include <QDebug>
+#include <QObject>
 #include <polkit-qt5-1/PolkitQt1/Agent/Listener>
+#include <polkit-qt5-1/PolkitQt1/Details>
 #include <polkit-qt5-1/PolkitQt1/Identity>
 #include <polkit-qt5-1/PolkitQt1/Subject>
-#include <polkit-qt5-1/PolkitQt1/Details>
-#include <QObject>
-#include <QDebug>
-#include <QDBusConnection>
 
 class QQuickCloseEvent;
 
-class PolkitInterface : public PolkitQt1::Agent::Listener
-{
+class PolkitInterface : public PolkitQt1::Agent::Listener {
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.nemomobile.lipstick.polkitAuthAgent")
 
@@ -51,9 +50,9 @@ class PolkitInterface : public PolkitQt1::Agent::Listener
     Q_PROPERTY(QString user READ user NOTIFY userChanged)
 
 public:
-    explicit PolkitInterface(QObject *parent = 0);
-    QString message() {return  m_message;}
-    QString user() {return m_user;}
+    explicit PolkitInterface(QObject* parent = 0);
+    QString message() { return m_message; }
+    QString user() { return m_user; }
 
 signals:
     void openAuthWindow();
@@ -64,13 +63,13 @@ signals:
     void iconChanged();
 
 public slots:
-    void initiateAuthentication(const QString &actionId,
-                                const QString &message,
-                                const QString &iconName,
-                                const PolkitQt1::Details &details,
-                                const QString &cookie,
-                                const PolkitQt1::Identity::List &identities,
-                                PolkitQt1::Agent::AsyncResult *result);
+    void initiateAuthentication(const QString& actionId,
+        const QString& message,
+        const QString& iconName,
+        const PolkitQt1::Details& details,
+        const QString& cookie,
+        const PolkitQt1::Identity::List& identities,
+        PolkitQt1::Agent::AsyncResult* result);
     bool initiateAuthenticationFinish();
     void cancelAuthentication();
 
