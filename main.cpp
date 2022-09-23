@@ -35,29 +35,29 @@
 
 #include <PolkitQt1/Subject>
 
+#include <string>
 #include <systemd/sd-login.h>
 #include <unistd.h>
-#include <string>
 
-#include <glacierapp.h>
 #include "polkitinterface.h"
+#include <glacierapp.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-    QGuiApplication *app = GlacierApp::app(argc, argv);
+    QGuiApplication* app = GlacierApp::app(argc, argv);
     app->setOrganizationName("NemoMobile");
     app->setQuitOnLastWindowClosed(false);
 
     PolkitQt1::UnixSessionSubject subject(QGuiApplication::applicationPid());
 
-    PolkitInterface *interface = new PolkitInterface();
+    PolkitInterface* interface = new PolkitInterface();
     interface->registerListener(subject, "/org/glacier/polkit/AuthenticationAgent");
 
-    QQmlApplicationEngine *engine = GlacierApp::engine(app);
-    QQmlContext *context = engine->rootContext();
+    QQmlApplicationEngine* engine = GlacierApp::engine(app);
+    QQmlContext* context = engine->rootContext();
     context->setContextProperty("polkitInterface", interface);
 
-    QQuickWindow *window = GlacierApp::showWindow();
+    QQuickWindow* window = GlacierApp::showWindow();
     window->setTitle(QObject::tr("Authentication"));
     window->hide();
 

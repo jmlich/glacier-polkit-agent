@@ -32,46 +32,43 @@
 #include "polkitinterface.h"
 #include "polkitAuthAgentAdaptor.h"
 
-PolkitInterface::PolkitInterface(QObject *parent) : PolkitQt1::Agent::Listener(parent)
-  ,m_message("")
-  ,m_user("")
-  ,m_cookie("")
-  ,m_currentIdentity(nullptr)
-  ,m_asyncResult(nullptr)
-  ,m_session(nullptr)
+PolkitInterface::PolkitInterface(QObject* parent)
+    : PolkitQt1::Agent::Listener(parent)
+    , m_message("")
+    , m_user("")
+    , m_cookie("")
+    , m_currentIdentity(nullptr)
+    , m_asyncResult(nullptr)
+    , m_session(nullptr)
 {
     new PolkitAuthAgentAdaptor(this);
     QDBusConnection dbus = QDBusConnection::sessionBus();
     dbus.registerService("org.nemomobile.polkitAuthAgent");
 
-    if (!QDBusConnection::sessionBus().registerObject("/org/nemomobile/polkitAuthAgent"
-                                                      , this,
-                                                      QDBusConnection::ExportScriptableSlots |
-                                                      QDBusConnection::ExportScriptableProperties |
-                                                      QDBusConnection::ExportAdaptors))
-    {
+    if (!QDBusConnection::sessionBus().registerObject("/org/nemomobile/polkitAuthAgent", this,
+            QDBusConnection::ExportScriptableSlots | QDBusConnection::ExportScriptableProperties | QDBusConnection::ExportAdaptors)) {
         qWarning() << "Could not initiate DBus!";
     }
 }
 
-void PolkitInterface::initiateAuthentication(const QString &actionId,
-                                             const QString &message,
-                                             const QString &iconName,
-                                             const PolkitQt1::Details &details,
-                                             const QString &cookie,
-                                             const PolkitQt1::Identity::List &identities,
-                                             PolkitQt1::Agent::AsyncResult *result)
+void PolkitInterface::initiateAuthentication(const QString& actionId,
+    const QString& message,
+    const QString& iconName,
+    const PolkitQt1::Details& details,
+    const QString& cookie,
+    const PolkitQt1::Identity::List& identities,
+    PolkitQt1::Agent::AsyncResult* result)
 {
     m_currentIdentity = identities.first();
     m_asyncResult = result;
     m_cookie = cookie;
 
-    if(m_message != message) {
+    if (m_message != message) {
         m_message = message;
         emit messageChanged();
     }
 
-    if(m_user != formalizeUser(identities.first())) {
+    if (m_user != formalizeUser(identities.first())) {
         m_user = formalizeUser(identities.first());
         emit userChanged();
     }
@@ -92,7 +89,7 @@ void PolkitInterface::cancelAuthentication()
 void PolkitInterface::sessionRequest(QString request, bool echo)
 {
     if (request.startsWith("password:", Qt::CaseInsensitive)) {
-        if(m_user != formalizeUser(m_currentIdentity)) {
+        if (m_user != formalizeUser(m_currentIdentity)) {
             m_user = formalizeUser(m_currentIdentity);
             emit userChanged();
         }
@@ -101,8 +98,8 @@ void PolkitInterface::sessionRequest(QString request, bool echo)
 
 void PolkitInterface::sessionComplete(bool auth)
 {
-    if(auth) {
-        if(m_session == nullptr) {
+    if (auth) {
+        if (m_session == nullptr) {
             m_asyncResult->setCompleted();
         } else {
             m_session->result()->setCompleted();
