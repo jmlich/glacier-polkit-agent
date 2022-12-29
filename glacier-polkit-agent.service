@@ -1,6 +1,6 @@
 [Unit]
 Description=Polkit agent
-After=lipstick.Service
+After=lipstick.service
 
 [Service]
 Type=simple
