@@ -1,5 +1,5 @@
 [Unit]
-Description=Polkit agent
+Description=Glacier UX polkit agent
 After=lipstick.service
 
 [Service]
@@ -8,6 +8,5 @@ ExecStart=/usr/bin/glacier-polkit-agent
 Restart=on-failure
 TimeoutStartSec=240
 
-
 [Install]
-WantedBy=graphical-session.target
+WantedBy=user-session.target
