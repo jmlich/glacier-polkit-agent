@@ -35,10 +35,10 @@
 #include <QDBusConnection>
 #include <QDebug>
 #include <QObject>
-#include <polkit-qt5-1/PolkitQt1/Agent/Listener>
-#include <polkit-qt5-1/PolkitQt1/Details>
-#include <polkit-qt5-1/PolkitQt1/Identity>
-#include <polkit-qt5-1/PolkitQt1/Subject>
+#include <polkit-qt6-1/PolkitQt1/Agent/Listener>
+#include <polkit-qt6-1/PolkitQt1/Details>
+#include <polkit-qt6-1/PolkitQt1/Identity>
+#include <polkit-qt6-1/PolkitQt1/Subject>
 
 class QQuickCloseEvent;
 
